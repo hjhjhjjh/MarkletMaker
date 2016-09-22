@@ -16,22 +16,79 @@ document.head.appendChild(uglify)
 
 //and the rest
 function run() {
+	if(!window.Babel || !window.UglifyJS) {
+		alert("ERROR: Babel or Uglify did not load, most likely due to Content Security Polices of " + window.location.origin)
+		
+	}
 	var output = Babel.transform(document.getElementById('input').value, { presets: ['es2015'] }).code;
 	var ugly=UglifyJS.parse(output)
 	var stream = UglifyJS.OutputStream();
 	ugly.print(stream);
+
 	document.getElementById('output').value='javascript:'+stream.toString()
+
 }
+
 document.body.innerHTML=`
-<style>body,html{margin:0;padding:0;width:100%;height:100%;text-align:center;background-color:#ccc;box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}textarea{float:left;resize:none;height:60vh;width:40vw}button{width:80vw;height:5vh;font-size:3vh;flex-grow:0;flex-shrink:0}#container{width:80vw;margin:5vh auto;padding:0}h1{width:80vw;height:5vh;margin:0;font-family:arial;background-color:#5d9;border-left:1px solid #a9a9a9;border-right:1px solid #a9a9a9;border-top:1px solid #a9a9a9;line-height:5vh}</style>
+<style>
+body,html
+{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:100%;
+	text-align:center;
+	background-color:#ccc;
+	box-sizing:border-box
+}
+*,*:before,*:after
+	{
+	box-sizing:inherit
+}
+textarea
+{
+	float:left;
+	resize:none;
+	height:60vh;
+	width:40vw
+}
+button
+{
+	width:80vw;
+	height:5vh;
+	font-size:3vh;
+	flex-grow:0;
+	flex-shrink:0
+	}
+#container
+{
+	width:80vw;
+	margin:5vh auto;
+	padding:0
+}
+h1
+{
+	width:80vw;
+	height:5vh;
+	margin:0;
+	font-family:arial;
+	background-color:#5d9;
+	border-left:1px solid #a9a9a9;
+	border-right:1px solid #a9a9a9;
+	border-top:1px solid #a9a9a9;
+	line-height:5vh
+}
+</style>
 <div id='container'>
-<h1>Markletify</h1>
-<textarea id='input'></textarea>
-<textarea id='output'></textarea>
-<button id='run'>GO!</button>
+	<h1>Markletify</h1>
+	<textarea id='input'></textarea>
+	<textarea id='output'></textarea>
+	<button id='run'>GO!</button>
 </div>
 `
 document.getElementById('run').onclick=run
 document.title='Markletify'
+
 }
+
 load()
